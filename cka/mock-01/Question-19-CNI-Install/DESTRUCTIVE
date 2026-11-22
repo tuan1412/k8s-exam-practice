@@ -1,0 +1,1 @@
+Removes the cluster's CNI (Calico): nodes go NotReady and new Pods get no network until you install one. Do it LAST (in the simulator it has a host of its own). Reset reinstalls the original Calico only if no CNI is running.

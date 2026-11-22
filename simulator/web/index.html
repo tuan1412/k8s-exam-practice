@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exam Simulator</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header id="topbar">
+  <button id="exam-title" class="brand" title="Choose another exam">Exam ▾</button>
+  <nav class="qnav">
+    <button id="prev" title="Previous question" aria-label="Previous question">‹</button>
+    <button id="qpicker-btn" aria-haspopup="true">Question <b id="qnum">–</b> / <span id="qtotal">–</span> ▾</button>
+    <button id="next" title="Next question" aria-label="Next question">›</button>
+    <button id="flag-btn" class="flag" title="Flag this question to come back later">⚑ Flag</button>
+  </nav>
+  <span class="spacer"></span>
+  <button id="kbd-btn" title="Keyboard shortcuts and drill">⌨ Shortcuts</button>
+  <button id="fs-btn" title="Fullscreen with keyboard lock: Ctrl+W/T/N go to the desktop instead of the browser">⛶ Fullscreen</button>
+  <span id="timer" title="Time remaining">--:--:--</span>
+  <button id="end-btn" class="danger">End exam</button>
+</header>
+<div id="qpicker" class="popover" hidden></div>
+
+<main>
+  <section id="qpane" aria-label="Task">
+    <div class="qhead">
+      <h2 id="qtitle"></h2>
+      <div id="qmeta"></div>
+      <div id="qhost" hidden></div>
+    </div>
+    <div id="qbody"></div>
+    <div id="qwarn" hidden></div>
+    <div class="qtools">
+      <button data-lab="setup" title="Run LabSetUp for this question on its host">Set up</button>
+      <button data-lab="validate" title="Grade this question">Check</button>
+      <button data-lab="cleanup" title="Remove this question's resources so you can retry">Reset</button>
+      <button id="sol-btn">Solution</button>
+      <span class="spacer"></span>
+      <button id="font-dec" title="Smaller text">A−</button>
+      <button id="font-inc" title="Larger text">A+</button>
+    </div>
+  </section>
+  <div id="splitter" role="separator" aria-orientation="vertical" title="Drag to resize"></div>
+  <section id="desk" aria-label="Remote desktop">
+    <div id="screen"></div>
+    <div id="desk-status">Connecting to the desktop…</div>
+  </section>
+</main>
+
+<div id="toast" role="status"></div>
+
+<dialog id="dlg-start">
+  <h3>Choose an exam</h3>
+  <div id="start-exams" class="exam-list" role="radiogroup" aria-label="Exam"></div>
+  <h3 id="start-title">Exam simulator</h3>
+  <p id="start-info"></p>
+  <ul class="tips">
+    <li>Left: the tasks. Click any <code class="copy demo">highlighted</code> text to copy it, then paste in the desktop terminal with <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>V</kbd>; the rest of the task text cannot be copied. Doc links open in a new tab of the desktop's Firefox.</li>
+    <li>Right: a Linux desktop (XFCE). Open the terminal and run the <code>ssh &lt;host&gt;</code> shown above each task (you land as <code>candidate</code>; <code>sudo -i</code> for root). Firefox only opens the allowed docs.</li>
+    <li>Use <b>⛶ Fullscreen</b> so that <kbd>Ctrl</kbd>+<kbd>W</kbd>, <kbd>Ctrl</kbd>+<kbd>T</kbd>… reach the desktop instead of closing your browser tab.</li>
+  </ul>
+  <label class="check"><input type="checkbox" id="start-clean" checked> <span id="start-clean-text">Remove the labs of the other exam first</span></label>
+  <label class="check"><input type="checkbox" id="start-setup" checked> <span id="start-setup-text">Set up all labs first</span></label>
+  <div class="row">
+    <button id="start-restart" class="ghost" hidden>Restart from scratch</button>
+    <span class="spacer"></span>
+    <button id="start-go" class="primary">Start exam</button>
+  </div>
+</dialog>
+
+<dialog id="dlg-out">
+  <h3 id="out-title"></h3>
+  <pre id="out-text"></pre>
+  <div class="row">
+    <span id="out-status"></span>
+    <span class="spacer"></span>
+    <button id="out-stop" class="ghost">Stop</button>
+    <button id="out-close" class="primary">Close</button>
+  </div>
+</dialog>
+
+<dialog id="dlg-confirm">
+  <h3 id="cf-title"></h3>
+  <p id="cf-text"></p>
+  <div class="row"><span class="spacer"></span>
+    <button id="cf-no" class="ghost">Cancel</button>
+    <button id="cf-yes" class="primary">OK</button>
+  </div>
+</dialog>
+
+<dialog id="dlg-kbd">
+  <div class="tabs">
+    <button data-tab="sheet" class="on">Cheat sheet</button>
+    <button data-tab="drill">Drill</button>
+    <span class="spacer"></span>
+    <button id="kbd-close" class="ghost">Close</button>
+  </div>
+  <div id="tab-sheet" class="tab"></div>
+  <div id="tab-drill" class="tab" hidden>
+    <div id="drill-intro">
+      <p>The drill shows an action; press the shortcut you would use in the exam desktop. Keys are captured here and not sent anywhere.</p>
+      <p class="muted">Keys the browser reserves (<kbd>Ctrl</kbd>+<kbd>W</kbd>/<kbd>T</kbd>/<kbd>N</kbd>, <kbd>Ctrl</kbd>+<kbd>Tab</kbd>, <kbd>Alt</kbd>+<kbd>Tab</kbd>) only reach the page in ⛶ Fullscreen (Chrome/Edge); otherwise use <i>Skip</i>.</p>
+      <button id="drill-start" class="primary">Start (15 random shortcuts)</button>
+    </div>
+    <div id="drill-run" hidden>
+      <div class="drill-progress" id="drill-progress"></div>
+      <div class="drill-action" id="drill-action"></div>
+      <div class="drill-feedback" id="drill-feedback">Press the shortcut…</div>
+      <div class="row">
+        <button id="drill-show" class="ghost">Show answer</button>
+        <span class="spacer"></span>
+        <button id="drill-skip" class="ghost">Skip</button>
+      </div>
+    </div>
+    <div id="drill-done" hidden></div>
+  </div>
+</dialog>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

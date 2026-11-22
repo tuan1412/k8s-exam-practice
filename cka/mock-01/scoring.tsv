@@ -1,0 +1,19 @@
+Question-01-MariaDB-Persistent-Volume	6	Storage
+Question-02-ArgoCD-Helm-Template	5	Cluster Architecture
+Question-03-Sidecar-Container	5	Workloads & Scheduling
+Question-04-Resource-Allocation	5	Workloads & Scheduling
+Question-05-HPA	5	Workloads & Scheduling
+Question-06-CRDs-Cert-Manager	4	Cluster Architecture
+Question-07-PriorityClass	4	Workloads & Scheduling
+Question-08-Cri-Dockerd-Sysctl	6	Cluster Architecture
+Question-09-Gateway-API-Migration	7	Services & Networking
+Question-10-Ingress-NodePort	5	Services & Networking
+Question-11-NetworkPolicy-Least-Permissive	5	Services & Networking
+Question-12-StorageClass-Default	4	Storage
+Question-13-NodePort-Service	5	Services & Networking
+Question-14-TLS-Config	6	Troubleshooting
+Question-15-Kubectl-Patch	4	Workloads & Scheduling
+Question-16-Resource-Requests-v2	5	Workloads & Scheduling
+Question-17-Taints-Tolerations	4	Workloads & Scheduling
+Question-18-Fix-Kube-Apiserver-Etcd	8	Troubleshooting
+Question-19-CNI-Install	7	Cluster Architecture

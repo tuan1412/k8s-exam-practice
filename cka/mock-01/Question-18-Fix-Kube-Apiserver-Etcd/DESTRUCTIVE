@@ -1,0 +1,1 @@
+Breaks the kube-apiserver (wrong etcd port): kubectl stops working for every question until you fix it. Set it up on its own, when you are ready to solve it.
